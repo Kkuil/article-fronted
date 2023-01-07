@@ -72,9 +72,9 @@ export default function VerifyPhone({ setCurrent, username, password }) {
         <>
             {contextHolder}
             <div className='verify_phone'>
-                <input type="text" placeholder='phone number' ref={phone_number} />
+                <input type="text" className='account_input' placeholder='phone number' ref={phone_number} />
                 <div className="verify_code">
-                    <input type="text" placeholder='code' ref={code}/>
+                    <input type="text" className='account_input' placeholder='code' ref={code}/>
                     <button disabled={isSending} onClick={sendCode}>
                         {
                             isSending

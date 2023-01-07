@@ -55,9 +55,9 @@ export default function RegInfo({ setCurrent }) {
             const uReg = /\w/g
             const isPass = uReg.test(e.target.value)
             const { isExisted } = await find({ username: e.target.value })
-            if(isExisted) {
+            if (isExisted) {
                 $message.error('该用户名已被占用')
-                return 
+                return
             }
             setStatus({
                 ...status,
@@ -115,7 +115,7 @@ export default function RegInfo({ setCurrent }) {
             }
         })
         if (!timer) {
-            const uReg = /\w/g
+            const uReg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
             const isPass = uReg.test(e.target.value) && e.target.value === regInfo.fPassword
             setStatus({
                 ...status,
@@ -144,11 +144,20 @@ export default function RegInfo({ setCurrent }) {
                         isShake: true
                     }
                 })
+                setTimeout(() => {
+                    setStatus({
+                        ...status,
+                        [key]: {
+                            ...status[key],
+                            isShake: false
+                        }
+                    })
+                }, 1000)
                 return
             }
         }
-        Pubsub.publish('sendInfo', { 
-            username: regInfo.username, 
+        Pubsub.publish('sendInfo', {
+            username: regInfo.username,
             password: regInfo.sPassword
         })
         localStorage.setItem('local_uname', regInfo.username)
@@ -156,11 +165,12 @@ export default function RegInfo({ setCurrent }) {
     }
     return (
         <div className='info'>
-            { contextHolder }
+            {contextHolder}
             <div className="username">
                 <i style={{ color: 'red', marginRight: '10px' }}>*</i>
                 <StyleInput
                     type="text"
+                    className='account_input'
                     value={regInfo.username}
                     placeholder='username'
                     onInput={getUname}
@@ -176,12 +186,12 @@ export default function RegInfo({ setCurrent }) {
             </div>
             <div className="first_password">
                 <i style={{ color: 'red', marginRight: '10px' }}>*</i>
-                <StyleInput type="password" placeholder='password' onInput={getFPw} style={{ animation: status.fPw.isShake && 'shake 0.1s 3' }} />
+                <StyleInput type="password" className='account_input' placeholder='password' onInput={getFPw} style={{ animation: status.fPw.isShake && 'shake 0.1s 3' }} />
                 {status.fPw.isFPwInput && <StatusIcon status={status.fPw.status} />}
             </div>
             <div className="second_password">
                 <i style={{ color: 'red', marginRight: '10px' }}>*</i>
-                <StyleInput type="password" placeholder='password again' onInput={getSPw} style={{ animation: status.sPw.isShake && 'shake 0.1s 3' }} />
+                <StyleInput type="password" className='account_input' placeholder='password again' onInput={getSPw} style={{ animation: status.sPw.isShake && 'shake 0.1s 3' }} />
                 {status.sPw.isSPwInput && <StatusIcon status={status.sPw.status} />}
             </div>
             <Button type='primary' size='large' className="go_verify_phone" onClick={verifyPhone}>验证手机号</Button>

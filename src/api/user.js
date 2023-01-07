@@ -48,3 +48,14 @@ export const add = async ({ username, password, phone_number }) => {
     })
     return data
 }
+
+export const update = async updateInfo => {
+    const data = await request({
+        url: '/user/update',
+        method: 'POST',
+        data: {
+            ...updateInfo
+        }
+    })
+    return data
+}

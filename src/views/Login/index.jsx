@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { findWithLogin } from '@/api/user'
 import LoginInput from '@/components/LoginInput'
 import { message } from 'antd'
+import SliderVerify from '@/components/SliderVerify'
 
 import LoginWriting1 from '@/assets/svg/LoginWriting1'
 import LoginWriting2 from '@/assets/svg/LoginWriting2'
@@ -12,6 +13,7 @@ import LoginWave from '@/assets/svg/LoginWave'
 import LoginAvatar from '@/assets/svg/LoginAvatar'
 
 import style from './login.module.scss'
+import { findAllByTestId } from '@testing-library/react'
 
 const StyleWords = styled.span`
     position: absolute;
@@ -64,13 +66,13 @@ const StyleLogin = styled.button`
 
 export default function Login() {
     const navigateTo = useNavigate()
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    let [username, setUsername] = useState('')
+    let [password, setPassword] = useState('')
+    let [isSliderAuth, setIsSliderAuth] = useState(false)
     const login = async () => {
         const { isAuth } = await findWithLogin({ username, password })
         if(isAuth) {
-            message.success('登录成功', 2)
-            navigateTo('/article')
+            setIsSliderAuth(true)
         } else {
             message.error('请检查输入的用户名密码是否正确', 2)
         }
@@ -102,6 +104,7 @@ export default function Login() {
                 </StyleAccForPw>
                 <StyleLogin className='login' onClick={login}>登录</StyleLogin>
             </div>
+            { isSliderAuth && <SliderVerify close={setIsSliderAuth}/> }
         </div>
     )
 }
