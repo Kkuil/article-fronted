@@ -1,4 +1,4 @@
-import React, { useState, createRef, useCallback } from 'react'
+import React, { useState, createRef } from 'react'
 import styled from 'styled-components'
 import { message, Button } from 'antd'
 import Pubsub from 'pubsub-js'
@@ -107,7 +107,7 @@ export default function Identify({ setCurrent }) {
                     phone: Phone,
                     code: Code
                 })
-                if (status == 200) {
+                if (status === 200) {
                     $message.success('验证成功')
                     Pubsub.publish('get_phone_number', Phone)
                     setCurrent(1)

@@ -13,7 +13,6 @@ import LoginWave from '@/assets/svg/LoginWave'
 import LoginAvatar from '@/assets/svg/LoginAvatar'
 
 import style from './login.module.scss'
-import { findAllByTestId } from '@testing-library/react'
 
 const StyleWords = styled.span`
     position: absolute;

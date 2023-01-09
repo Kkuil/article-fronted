@@ -17,7 +17,7 @@ export default function TSecsNaviLogin({ sentence }) {
         return () => {
             clearInterval(timer)
         }
-    }, [remainSec])
+    }, [remainSec, navigateTo])
     return (
         <div className='secs'>
             <i className="iconfont icon-duigou" style={{ color: '#7ee784', fontSize: '20px' }}></i>

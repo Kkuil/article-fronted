@@ -25,7 +25,7 @@ request.interceptors.request.use(config => {
 })
 
 request.interceptors.response.use(res => {
-    if(res.config.url == '/user/find' && res.config.method == 'post') {
+    if(res.config.url === '/user/find' && res.config.method === 'post') {
         const { user_token } = res.headers
         localStorage.setItem('USER_TOKEN', user_token)
     }

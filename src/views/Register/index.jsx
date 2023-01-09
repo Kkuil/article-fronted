@@ -112,7 +112,7 @@ export default function Register() {
         return () => {
             sid && Pubsub.unsubscribe(sid)
         }
-    }, [userInfo, sid])
+    }, [userInfo])
     return (
         <StyleRegister className="flex_center">
             <BackLogin />

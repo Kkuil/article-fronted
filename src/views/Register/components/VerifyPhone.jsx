@@ -1,4 +1,4 @@
-import React, { createRef, useCallback, useEffect, useState } from 'react'
+import React, { createRef, useCallback, useState } from 'react'
 import { message, Button } from 'antd'
 import { find } from '@/api/user'
 import { send, verify } from '@/api/captcha'
@@ -52,7 +52,7 @@ export default function VerifyPhone({ setCurrent, username, password }) {
                 phone: Phone,
                 code:Code
             })
-            if(status == 200) {
+            if(status === 200) {
                 await add({
                     username,
                     password,
