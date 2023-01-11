@@ -8,14 +8,11 @@ const request = axios.create({
 const CancelToken = axios.CancelToken
 const source = CancelToken.source()
 
-const NotVerifyToken = [
-    '/user/find',
-    '/user/add',
-    '/captcha/send',
-    '/captcha/verify'
+const NeedVerifyToken = [
+    '/user/auth'
 ]
 request.interceptors.request.use(config => {
-    if(!NotVerifyToken.includes(config.url)) {
+    if(NeedVerifyToken.includes(config.url)) {
         const user_token = localStorage.getItem('USER_TOKEN')
         user_token ? config.headers['USER_TOKEN'] = user_token : source.cancel('USER_TOKEN已失效')    
     }

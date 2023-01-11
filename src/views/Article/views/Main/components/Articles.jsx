@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import style from '../../../article.module.scss'
+
+import style from '@/views/Article/article.module.scss'
 
 const StyleNavBar = styled.div`
     position: relative;
@@ -39,9 +40,7 @@ const availablePathname = [
 export default function Articles() {
     const navigateTo = useNavigate()
     const { pathname } = useLocation()
-    let [activeIndex, setActiveIndex] = useState(0)
-    function changeNav({ index, params }) {
-        setActiveIndex(index)
+    function changeNav({ params }) {
         navigateTo(`/article/${params}`)
     }
     useEffect(() => {
@@ -50,13 +49,13 @@ export default function Articles() {
         } else {
             navigateTo('/article/recommend')
         }
-    }, [])
+    }, [pathname])
     return (
         <div className={style.articles}>
             <StyleNavBar className="nav_bar">
                 <div 
                     className={`item flex_center ${pathname === '/article/recommend' ? 'active' : ''}`}
-                    onClick={() => changeNav({ index: 0, params: 'recommend' })}
+                    onClick={() => changeNav({ params: 'recommend' })}
                 >
                     <i className="iconfont icon-tuijian"></i>
                     <span>推荐</span>
@@ -64,7 +63,7 @@ export default function Articles() {
                 <b>|</b>
                 <div 
                     className={`item flex_center ${pathname === '/article/newest' ? 'active' : ''}`}
-                    onClick={() => changeNav({ index: 1, params: 'newest' })}
+                    onClick={() => changeNav({ params: 'newest' })}
                 >
                     <i className="iconfont icon-zuixinzixun-10"></i>
                     <span>最新</span>
@@ -72,7 +71,7 @@ export default function Articles() {
                 <b>|</b>
                 <div 
                     className={`item flex_center ${pathname === '/article/hottest' ? 'active' : ''}`}
-                    onClick={() => changeNav({ index: 2, params: 'hottest' })}
+                    onClick={() => changeNav({ params: 'hottest' })}
                 >
                     <i className="iconfont icon-remen"></i>
                     <span>最热</span>

@@ -123,8 +123,10 @@ const StyleTM = styled.div`
     }
     .profile {
         margin-left: 10px;
-        width: 40px;
         cursor: pointer;
+        .username {
+            margin-right: 5px;
+        }
     }
     @media screen and (max-width: 375px) {
         .publish_article {
@@ -153,6 +155,11 @@ const StyleTM = styled.div`
                 display: none;
             }
         }
+        .profile {
+            .username {
+                display: none;
+            }
+        }
     }
     @media screen and (max-width: 1050px) {
         padding: 0;
@@ -172,7 +179,7 @@ const activeStyle = {
     borderBottom: '2px solid #0094ff'
 }
 var sid = null
-export default function TopMenu() {
+export default function TopMenu({ user }) {
     const navigateTo = useNavigate()
     let [isFocus, setIsFocus] = useState(false)
     const top_menu = createRef()
@@ -209,11 +216,11 @@ export default function TopMenu() {
 
     return (
         <StyleTM className='top_menu' ref={top_menu}>
-            <div className="logo" onClick={() => navigateTo('/article')}>
+            <div className="logo" onClick={() => navigateTo('/publish')}>
                 <img src="/image/logo.png" alt="Ky" title='Ky客' />
             </div>
             <div className="nav">
-                <NavLink to='/article/' style={({ isActive }) => isActive ? activeStyle : undefined}>首页</NavLink>
+                <NavLink to='/article' style={({ isActive }) => isActive ? activeStyle : undefined}>首页</NavLink>
                 <NavLink to='/article/studying' style={({ isActive }) => isActive ? activeStyle : undefined}>学习</NavLink>
                 <NavLink to='/article/life' style={({ isActive }) => isActive ? activeStyle : undefined}>生活</NavLink>
                 <NavLink to='/article/coding' style={({ isActive }) => isActive ? activeStyle : undefined}>Coding</NavLink>
@@ -228,13 +235,22 @@ export default function TopMenu() {
                 <input type="text" placeholder='search' onFocus={() => setIsFocus(true)} onBlur={() => setIsFocus(false)} />
             </div>
             <div className="publish_article">
-                <button className='publish'>
+                <button
+                    className='publish'
+                    title='发文章'
+                    onClick={() => navigateTo('/publish')}
+                >
                     <i className="iconfont icon-Writing"></i>
                     <span>发文章</span>
                 </button>
             </div>
             <div className="profile flex_center">
-                <Avatar size='large' icon={<UserOutlined />} />
+                <span className='username'>{user.username}</span>
+                {
+                    user.avatar
+                        ? <img src={user.avatar} alt="" title={user.username} />
+                        : <Avatar size='large' icon={<UserOutlined />} />
+                }
             </div>
         </StyleTM>
     )

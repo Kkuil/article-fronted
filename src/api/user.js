@@ -36,6 +36,14 @@ export const findWithLogin = async ({ username, password }) => {
     return data
 }
 
+export const auth = async () => {
+    const { data } = await request({
+        url: '/user/auth',
+        method: 'POST'
+    })
+    return data
+}
+
 export const add = async ({ username, password, phone_number }) => {
     const { data } = await request({
         url: '/user/add',
