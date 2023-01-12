@@ -212,7 +212,7 @@ export default function TopMenu({ user }) {
             Pubsub.unsubscribe(sid)
             window.onscroll = null
         }
-    }, [sid])
+    }, [scrollEvent, top_menu])
 
     return (
         <StyleTM className='top_menu' ref={top_menu}>

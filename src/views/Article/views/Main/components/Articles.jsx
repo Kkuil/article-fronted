@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -49,7 +49,7 @@ export default function Articles() {
         } else {
             navigateTo('/article/recommend')
         }
-    }, [pathname])
+    }, [pathname, navigateTo])
     return (
         <div className={style.articles}>
             <StyleNavBar className="nav_bar">

@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
-import _ from 'lodash'
-import { auth } from '@/api/user'
+import { useEffect } from 'react'
 import { message } from 'antd'
 import { useNavigate } from 'react-router-dom'
+
+import RichText from './components/RichText'
+import TopMenu from './components/TopMenu'
+import { auth } from '@/api/user'
 
 var bannedDouble = false
 export default function Publish() {
@@ -25,8 +27,11 @@ export default function Publish() {
         return () => {
             bannedDouble = false
         }
-    }, [])
+    }, [navigateTo])
     return (
-        <div>Publish</div>
+        <div className="publish">
+            <TopMenu />
+            <RichText />
+        </div>
     )
 }
