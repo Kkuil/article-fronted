@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React, { useState, useEffect, createRef, useCallback } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { UserOutlined } from '@ant-design/icons';
@@ -183,14 +183,15 @@ export default function TopMenu({ user }) {
     const navigateTo = useNavigate()
     let [isFocus, setIsFocus] = useState(false)
     const top_menu = createRef()
+    // 上一次滚动位置
     let pre_scroll_Y = 0
-    const scrollEvent = () => {
+    const scrollEvent = useCallback(() => {
         Pubsub.publish('hideKits')
         if (window.scrollY > 100 && !(window.scrollY - pre_scroll_Y < 0)) {
             top_menu.current.style.transform = 'translateY(-100%)'
             Pubsub.publish('changeScrollTop', true)
         }
-        if (window.scrollY > 100 && window.scrollY - pre_scroll_Y < 0 || window.scrollY < 100) {
+        if (window.scrollY > 100 && (window.scrollY - pre_scroll_Y < 0 || window.scrollY < 100)) {
             top_menu.current.style.transform = `translateY(0)`
             Pubsub.publish('changeScrollTop', false)
         }
@@ -200,7 +201,7 @@ export default function TopMenu({ user }) {
         } else {
             Pubsub.publish('showRTop', false)
         }
-    }
+    }, [])
     useEffect(() => {
         window.onscroll = _.throttle(scrollEvent, 100)
         sid = Pubsub.subscribe('recover', () => {
@@ -213,10 +214,14 @@ export default function TopMenu({ user }) {
             window.onscroll = null
         }
     }, [scrollEvent, top_menu])
-
+    useEffect(() => {
+        Pubsub.subscribe('studying', (_, bool) => {
+            top_menu.current.style.transform = bool ? 'translateY(-100%)' : 'translateY(0)'
+        })
+    }, [top_menu])
     return (
         <StyleTM className='top_menu' ref={top_menu}>
-            <div className="logo" onClick={() => navigateTo('/publish')}>
+            <div className="logo" onClick={() => navigateTo('/article')}>
                 <img src="/image/logo.png" alt="Ky" title='Ky客' />
             </div>
             <div className="nav">

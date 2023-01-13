@@ -1,0 +1,18 @@
+{
+    "root": true, //根配置，每一个文件夹都可以配置eslintrc文件，依次向外找该文件，找到 "root": true,  则停止，我再最外层只配置了一个eslintrc文件，则所有的文件只依赖这一个文件的规则
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "rules": {
+        "no-unused-expressions": 0
+    }
+}

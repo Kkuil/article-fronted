@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 
 import '@/style/base/base.scss'
 import '@/style/icon/icon.css'
+import '@/style/icon/icon.js'
 import '@/style/common/common.scss'
 import 'animate.css';
 

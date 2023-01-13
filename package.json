@@ -16,6 +16,7 @@
     "ant-design": "^1.0.0",
     "antd": "^5.1.2",
     "axios": "^1.2.2",
+    "babel-eslint": "^10.1.0",
     "better-scroll": "^2.5.0",
     "crypto-js": "^4.1.1",
     "immutable": "^4.2.1",
