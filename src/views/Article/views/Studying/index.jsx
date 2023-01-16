@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Button } from 'antd'
+import Modal from './components/Model'
 import styled from 'styled-components'
-import PubSub from 'pubsub-js'
+
+import Study from './components/Study'
 
 const StyleStudying = styled.div`
     transition: all .3s;
@@ -62,7 +64,6 @@ const StyleStudying = styled.div`
             transition: all .3s;
         }
     }
-
     @media screen and (max-width: 800px) {
         .title {
             .studying {
@@ -86,9 +87,9 @@ const StyleStudying = styled.div`
 export default function Studying() {
     const [isImmersiveStudying, setIsImmersiveStudying] = useState(false)
     const [isCollapseTitle, setIsCollapseTitle] = useState(false)
+    const [open, setOpen] = useState(false)
     function studying() {
-        PubSub.publish('studying', !isImmersiveStudying)
-        setIsImmersiveStudying(!isImmersiveStudying)
+        setOpen(true)
     }
     return (
         <StyleStudying
@@ -97,6 +98,7 @@ export default function Studying() {
             }}
             className='studying'
         >
+            <Modal open={open} setOpen={setOpen} isImmersiveStudying={isImmersiveStudying} setIsImmersiveStudying={setIsImmersiveStudying} />
             <div
                 className="title flex_center"
                 style={{
@@ -147,7 +149,9 @@ export default function Studying() {
                                 transform: `${isCollapseTitle ? 'translateY(-80px)' : 'translateY(0)'}`,
                                 height: `${isCollapseTitle ? '100vh' : 'calc(100vh - 80px)'}`
                             }}
-                        >studying</div>
+                        >
+                            <Study />
+                        </div>
                         : <div className="plugins">plugins</div>
                 }
             </div>

@@ -1,15 +1,36 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Editor } from '@tinymce/tinymce-react';
+import styled from 'styled-components';
+import PubSub from 'pubsub-js'
+
+const Input = styled.input`
+    border: 0;
+    width: 100%;
+    height: 60px;
+    text-align: center;
+    border-top: 5px solid #ccc;
+    border-radius: 10px;
+    font-size: 25px;
+    transition: all .3s;
+    &:focus {
+        border-color: #0094ff;
+    }
+`
 
 export default function RichText() {
     const editorRef = useRef(null);
-    const log = () => {
-        if (editorRef.current) {
-            console.log(editorRef.current.getContent());
-        }
-    };
+    const title = useRef(null)
+    useEffect(() => {
+        PubSub.subscribe("tmpBridge", () => {
+            PubSub.publish("getContent", {
+                title: title.current.value, 
+                content: editorRef.current.getContent()
+            })
+        })
+    }, [])
     return (
         <>
+            <Input type="text" ref={title} placeholder='为你的文章起个标题吧'/>
             <Editor
                 onInit={(evt, editor) => editorRef.current = editor}
                 initialValue="<p>Write something</p>"

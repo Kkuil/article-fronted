@@ -3,28 +3,26 @@ import { Outlet } from 'react-router-dom'
 import style from './article.module.scss'
 import { message } from 'antd'
 import PubSub from 'pubsub-js'
+import { modify } from '@/store/modules/user'
 
 import { auth } from '@/api/user'
 import TopMenu from './components/TopMenu'
 import ToolKits from './components/ToolKits'
+import { connect } from 'react-redux'
 
-export default function Article() {
-    let [user, setUser] = useState({
-        username: '未登录',
-        avatar: ''
-    })
+function Article({ userInfo, modify }) {
     const [isStudying, setIsStudying] = useState(false)
     useEffect(() => {
         async function Auth() {
             const { status, msg, user } = await auth()
             if (status === 200) {
-                setUser(user)
+                modify(user)
             } else {
                 message.error(msg, 3)
             }
         }
         Auth()
-    }, [])
+    }, [modify])
     useEffect(() => {
         PubSub.subscribe('studying', (_, bool) => {
             setIsStudying(bool)
@@ -38,7 +36,7 @@ export default function Article() {
                 overflow: `${isStudying && 'hidden'}`
             }}
         >
-            <TopMenu user={user} />
+            <TopMenu user={userInfo} />
             <div
                 className={`${style.views} views`}
             >
@@ -48,3 +46,15 @@ export default function Article() {
         </div>
     )
 }
+
+const mapStateToProps = state => {
+    return {
+        userInfo: state.user.user
+    }
+}
+
+const mapDispatchToProps = {
+    modify
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Article)

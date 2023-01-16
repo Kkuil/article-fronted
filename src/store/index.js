@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import countSlice from './modules/count'
+import studyTimeSlice from './modules/studyTime'
+import userSlice from './modules/user'
 
 export const store = configureStore({
     reducer: {
-        count: countSlice.reducer
+        studyTime: studyTimeSlice.reducer,
+        user: userSlice.reducer
     }
 })
