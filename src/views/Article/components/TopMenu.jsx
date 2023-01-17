@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef, useCallback } from 'react'
+import React, { useState, useEffect, createRef, useCallback, useRef } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { UserOutlined } from '@ant-design/icons';
@@ -128,7 +128,7 @@ const StyleTM = styled.div`
             margin-right: 5px;
         }
     }
-    @media screen and (max-width: 375px) {
+    @media screen and (max-width: 380px) {
         .publish_article {
             .publish {
                 width: 40px;
@@ -178,47 +178,47 @@ const activeStyle = {
     color: '#0094ff',
     borderBottom: '2px solid #0094ff'
 }
-var sid = null
+var sidR = null
+var sidS = null
 export default function TopMenu({ user }) {
     const navigateTo = useNavigate()
     let [isFocus, setIsFocus] = useState(false)
     const top_menu = createRef()
     // 上一次滚动位置
-    let pre_scroll_Y = 0
+    let [preScrollY, setPreScrollY] = useState(0)
     const scrollEvent = useCallback(() => {
         Pubsub.publish('hideKits')
-        if (window.scrollY > 100 && !(window.scrollY - pre_scroll_Y < 0)) {
+        if (window.scrollY > 100 && !(window.scrollY - preScrollY < 0)) {
             top_menu.current.style.transform = 'translateY(-100%)'
             Pubsub.publish('changeScrollTop', true)
         }
-        if (window.scrollY > 100 && (window.scrollY - pre_scroll_Y < 0 || window.scrollY < 100)) {
+        if (window.scrollY > 100 && (window.scrollY - preScrollY < 0 || window.scrollY < 100)) {
             top_menu.current.style.transform = `translateY(0)`
             Pubsub.publish('changeScrollTop', false)
         }
-        pre_scroll_Y = window.scrollY
+        setPreScrollY(window.scrollY)
         if (window.scrollY > 500) {
             Pubsub.publish('showRTop', true)
         } else {
             Pubsub.publish('showRTop', false)
         }
-    }, [])
+    }, [top_menu, preScrollY])
     useEffect(() => {
         window.onscroll = _.throttle(scrollEvent, 100)
-        sid = Pubsub.subscribe('recover', () => {
+        sidR = Pubsub.subscribe('recover', () => {
             top_menu.current.style.transform = 'translateY(0)'
             window.onscroll = null
             window.onscroll = _.throttle(scrollEvent, 100)
         })
+        sidS = Pubsub.subscribe('studying', (_, bool) => {
+            top_menu.current.style.transform = bool ? 'translateY(-100%)' : 'translateY(0)'
+        })
         return () => {
-            Pubsub.unsubscribe(sid)
+            Pubsub.unsubscribe(sidR)
+            Pubsub.unsubscribe(sidS)
             window.onscroll = null
         }
     }, [scrollEvent, top_menu])
-    useEffect(() => {
-        Pubsub.subscribe('studying', (_, bool) => {
-            top_menu.current.style.transform = bool ? 'translateY(-100%)' : 'translateY(0)'
-        })
-    }, [top_menu])
     return (
         <StyleTM className='top_menu' ref={top_menu}>
             <div className="logo" onClick={() => navigateTo('/article')}>

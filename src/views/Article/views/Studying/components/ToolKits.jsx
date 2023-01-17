@@ -67,7 +67,6 @@ function ToolKits({ isPlay, changeTime, setPlay, restart }) {
 }
 
 const mapStateToProps = state => {
-    console.log(state)
     return {
         isPlay: state.studyTime.isPlay
     }

@@ -62,6 +62,7 @@ var sid2 = null
 export default function ToolKits() {
     let [isShowKits, setIsShowKits] = useState(0)
     let [isShowRTop, setIsShowRTop] = useState(false)
+    let [isPc, setIsPc] = useState(true)
     useEffect(() => {
         sid1 = Pubsub.subscribe('showRTop', (_, bool) => {
             setIsShowRTop(bool)
@@ -73,43 +74,56 @@ export default function ToolKits() {
             Pubsub.unsubscribe(sid1)
             Pubsub.unsubscribe(sid2)
         }
-    }, [sid1, sid2])
+    }, [])
+    // 适配移动端
+    useEffect(() => {
+        const respReg = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+        if (respReg.test(navigator.userAgent)) {
+            setIsPc(false)
+        }
+    }, [])
     return (
-        <div className={style.tool_kits}>
-            <div className={`${style.arrow} flex_center`} onClick={() => setIsShowKits([0, 2].includes(isShowKits) ? 1 : 2)}>
-                <i
-                    className='iconfont icon-arrow-up-filling'
-                    style={{
-                        transform: `${![0, 2].includes(isShowKits) ? 'rotate(180deg)' : 'rotate(0deg)'}`
-                    }}></i>
-            </div>
-            <StyleKits
-                className="kits"
-                style={{
-                    display: `${[1, 2].includes(isShowKits) ? 'block' : ''}`,
-                    animation: `
-                    ${isShowKits === 1
-                            ? 'show 0.6s forwards'
-                            : isShowKits === 2
-                                ? 'hide 0.6s forwards'
-                                : ''
+        <>
+            {
+                isPc
+                &&
+                <div className={style.tool_kits}>
+                    <div className={`${style.arrow} flex_center`} onClick={() => setIsShowKits([0, 2].includes(isShowKits) ? 1 : 2)}>
+                        <i
+                            className='iconfont icon-arrow-up-filling'
+                            style={{
+                                transform: `${![0, 2].includes(isShowKits) ? 'rotate(180deg)' : 'rotate(0deg)'}`
+                            }}></i>
+                    </div>
+                    <StyleKits
+                        className="kits"
+                        style={{
+                            display: `${[1, 2].includes(isShowKits) ? 'block' : ''}`,
+                            animation: `
+                ${isShowKits === 1
+                                    ? 'show 0.6s forwards'
+                                    : isShowKits === 2
+                                        ? 'hide 0.6s forwards'
+                                        : ''
+                                }
+                `
+                        }}
+                    >
+                        <i className="flex_center iconfont icon-qrcode" onClick={() => setIsShowKits(2)}></i>
+                        <i className="flex_center iconfont icon-kefu" onClick={() => setIsShowKits(2)}></i>
+                        {
+                            isShowRTop
+                            &&
+                            <i className="flex_center iconfont icon-31huidaodingbu" onClick={() => setIsShowKits(2)}>
+                                <button href="#" onClick={() => {
+                                    Pubsub.publish('recover')
+                                    setIsShowRTop(false)
+                                }}>1</button>
+                            </i>
                         }
-                    `
-                }}
-            >
-                <i className="flex_center iconfont icon-qrcode" onClick={() => setIsShowKits(2)}></i>
-                <i className="flex_center iconfont icon-kefu" onClick={() => setIsShowKits(2)}></i>
-                {
-                    isShowRTop
-                    &&
-                    <i className="flex_center iconfont icon-31huidaodingbu" onClick={() => setIsShowKits(2)}>
-                        <a href="#" onClick={() => {
-                            Pubsub.publish('recover')
-                            setIsShowRTop(false)
-                        }}></a>
-                    </i>
-                }
-            </StyleKits>
-        </div>
+                    </StyleKits>
+                </div>
+            }
+        </>
     )
 }

@@ -38,7 +38,7 @@ const StyleStudy = styled.div`
 
 function Study({ study_time }) {
     return (
-        <StyleStudy className='flex_center'>
+        <StyleStudy className='study flex_center'>
             <div className="time">{study_time}</div>
             <ToolKits />
         </StyleStudy>

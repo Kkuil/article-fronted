@@ -25,14 +25,18 @@ const StyleStudying = styled.div`
                 display: none;
             }
         }
-        .svgIcon {
-            position: relative;
-            svg {
-                position: absolute;
-                top: 5px;
-                left: -50px;
-                width: 42px;
-                height: 42px;
+        h1 {
+            display: flex;
+            align-items: center;
+            .svgIcon {
+                position: relative;
+                svg {
+                    position: absolute;
+                    top: 8px;
+                    left: -50px;
+                    width: 42px;
+                    height: 42px;
+                }
             }
         }
         .icon-arrow-down {
@@ -82,6 +86,35 @@ const StyleStudying = styled.div`
             }
         }
     }
+    @media screen and (max-width: 600px) {
+        .studying {
+            font-size: 50px;
+            i {
+            }
+        }
+        h1 {
+            .svgIcon {
+                svg {
+                    width: 30px;
+                    height: 30px;
+                }
+                span {
+                    font-size: 30px;
+                }
+            }
+            .welcome {
+                font-size: 21px;
+            }
+        }
+        .content {
+            .study {
+                font-size: 40px; 
+            }
+            .tool_kits {
+                display: none;
+            }
+        }
+    }
 `
 
 export default function Studying() {
@@ -114,7 +147,7 @@ export default function Studying() {
                                 </svg>
                                 <span>沉浸式学习中...</span>
                             </span>
-                            : <span>欢迎来到Ky-Studying专区</span>
+                            : <span className='welcome'>欢迎来到Ky-Studying专区</span>
                     }
                 </h1>
                 <Button

@@ -1,5 +1,4 @@
 .article {
-    min-width: 300px;
 
     .views {
         width: 100vw;
@@ -22,17 +21,23 @@
                 top: 80px;
                 right: 30px;
                 width: 270px;
-                height: 480px;
+                height: 580px;
                 transition: all .3s;
             }
 
-            @media screen and (max-width: 800px) {
+            @media screen and (max-width: 957px) {
                 .side_bar {
                     display: none;
                 }
 
                 .articles {
                     margin-right: 0;
+                }
+            }
+            @media screen and (max-width: 620px) {
+
+                .articles {
+                    margin: 20px;
                 }
             }
         }

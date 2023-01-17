@@ -16,6 +16,9 @@ const StyleArticleType = styled.div`
             :last-child {
                 border: 0;
             }
+            :first-child {
+                border-bottom: 1px solid #ccc;
+            }
             &:hover {
                 background-color: #fafafa;
             }
