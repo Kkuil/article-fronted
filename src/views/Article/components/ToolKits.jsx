@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import style from '../article.module.scss'
 import styled from 'styled-components'
 import Pubsub from 'pubsub-js'
-import _ from 'lodash'
 
 const StyleKits = styled.div`
     display: none;
@@ -67,7 +66,7 @@ export default function ToolKits() {
         sid1 = Pubsub.subscribe('showRTop', (_, bool) => {
             setIsShowRTop(bool)
         })
-        sid2 = Pubsub.subscribe('hideKits', _ => {
+        sid2 = Pubsub.subscribe('hideKits', () => {
             setIsShowKits(2)
         })
         return () => {
@@ -114,11 +113,12 @@ export default function ToolKits() {
                         {
                             isShowRTop
                             &&
-                            <i className="flex_center iconfont icon-31huidaodingbu" onClick={() => setIsShowKits(2)}>
-                                <button href="#" onClick={() => {
-                                    Pubsub.publish('recover')
-                                    setIsShowRTop(false)
-                                }}>1</button>
+                            <i className="flex_center iconfont icon-31huidaodingbu" onClick={() => {
+                                setIsShowKits(2)
+                                Pubsub.publish('recover')
+                                setIsShowRTop(false)
+                            }}>
+                                <a href="#"></a>
                             </i>
                         }
                     </StyleKits>

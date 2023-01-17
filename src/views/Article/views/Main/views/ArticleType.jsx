@@ -62,6 +62,11 @@ const StyleArticleType = styled.div`
             }
         }
     },
+    .loading {
+        .item {
+            margin: 10px;
+        }
+    }
     .no_articles {
         height: 600px;
     }
@@ -129,11 +134,11 @@ export default function ArticleType() {
                 isLoading
                     ? (
                         <div className="loading">
-                            <Skeleton active loading={isLoading} />
-                            <Skeleton active loading={isLoading} />
-                            <Skeleton active loading={isLoading} />
-                            <Skeleton active loading={isLoading} />
-                            <Skeleton active loading={isLoading} />
+                            <Skeleton className='item' active loading={isLoading} />
+                            <Skeleton className='item' active loading={isLoading} />
+                            <Skeleton className='item' active loading={isLoading} />
+                            <Skeleton className='item' active loading={isLoading} />
+                            <Skeleton className='item' active loading={isLoading} />
                         </div>
                     )
                     : articles.length

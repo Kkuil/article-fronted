@@ -4,6 +4,7 @@ import Modal from './components/Model'
 import styled from 'styled-components'
 
 import Study from './components/Study'
+import Plugins from './components/Plugins'
 
 const StyleStudying = styled.div`
     transition: all .3s;
@@ -62,10 +63,14 @@ const StyleStudying = styled.div`
         }
     }
     .content {
+        height: auto;
         .studying {
             height: 100vh;
             background-color: pink;
             transition: all .3s;
+        }
+        .plugins {
+            padding: 20px;
         }
     }
     @media screen and (max-width: 800px) {
@@ -185,7 +190,11 @@ export default function Studying() {
                         >
                             <Study />
                         </div>
-                        : <div className="plugins">plugins</div>
+                        : <div
+                            className="plugins"
+                        >
+                            <Plugins />
+                        </div>
                 }
             </div>
         </StyleStudying>

@@ -5,9 +5,7 @@ import Model from '@/components/Model';
 export default function ScreenLoading() {
     return (
         <Model>
-            <Spin tip="Loading" size="large">
-                <div className="content" />
-            </Spin>
+            <Spin tip="Loading" size="large" />
         </Model>
     )
 }

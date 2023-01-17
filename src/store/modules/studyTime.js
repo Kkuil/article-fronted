@@ -9,14 +9,14 @@ const studyTimeSlice = createSlice({
         study_time: '00 : 00 : 00'
     },
     reducers: {
-        changeTime(state, actions) {
+        changeTime(state) {
             state.timestamp += 1000
             state.study_time = moment(state.timestamp).format('HH : mm : ss')
         },
-        setPlay(state, action) {
+        setPlay(state) {
             state.isPlay = !state.isPlay
         },
-        restart(state, actions) {
+        restart(state) {
             state.timestamp = 57600000
             state.study_time = '00 : 00 : 00'
         }

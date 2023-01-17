@@ -32,8 +32,8 @@ function Article({ userInfo, modify }) {
         <div
             className={style.article}
             style={{
-                height: `${isStudying && '100vh'}`,
-                overflow: `${isStudying && 'hidden'}`
+                height: `${isStudying ? '100vh' : ''}`,
+                overflow: `${isStudying ? 'hidden' : ''}`
             }}
         >
             <TopMenu user={userInfo} />

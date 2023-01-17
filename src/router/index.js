@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, redirect } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import CompLazy from '@/utils/CompLazy.js'
 
 import NotFound from '@/views/NotFound'

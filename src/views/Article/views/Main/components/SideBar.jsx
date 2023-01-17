@@ -4,6 +4,7 @@ import Pubsub from 'pubsub-js'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment/moment'
+import { Tooltip } from 'antd'
 
 const Welcome = styled.div`
     height: 130px;
@@ -157,7 +158,9 @@ function SideBar({ user }) {
                 <div className='share'>
                     {
                         sentences.map(s => (
-                            <div key={s}>{s}</div>
+                            <Tooltip title={s} color="#0094ff" key={s}>
+                                <div>{s}</div>
+                            </Tooltip>
                         ))
                     }
                 </div>

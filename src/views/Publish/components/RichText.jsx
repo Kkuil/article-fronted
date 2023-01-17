@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, createRef } from 'react'
 import { Editor } from '@tinymce/tinymce-react';
 import styled from 'styled-components';
 import PubSub from 'pubsub-js'
@@ -18,8 +18,8 @@ const Input = styled.input`
 `
 
 export default function RichText() {
-    const editorRef = useRef(null);
-    const title = useRef(null)
+    const editorRef = createRef(null);
+    const title = createRef(null)
     useEffect(() => {
         PubSub.subscribe("tmpBridge", () => {
             PubSub.publish("getContent", {

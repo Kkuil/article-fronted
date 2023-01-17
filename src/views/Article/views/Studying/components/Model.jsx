@@ -1,7 +1,8 @@
+import React from 'react'
 import { Modal } from 'antd'
 import PubSub from 'pubsub-js'
 
-export default ({ open, setOpen, isImmersiveStudying, setIsImmersiveStudying }) => {
+export default function model({ open, setOpen, isImmersiveStudying, setIsImmersiveStudying }) {
     const enterStudying = () => {
         setOpen(false)
         PubSub.publish('studying', !isImmersiveStudying)

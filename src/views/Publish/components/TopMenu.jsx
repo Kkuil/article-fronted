@@ -27,7 +27,7 @@ const StyleTopMenu = styled.div`
         color: #fff;
     }
 `
-
+var sid = null
 function TopMenu({ username }) {
     const navigateTo = useNavigate()
     const [info, setInfo] = useState({
@@ -57,12 +57,15 @@ function TopMenu({ username }) {
         navigateTo("/article")
     }
     useEffect(() => {
-        PubSub.subscribe('getContent', (_, { title, content }) => {
+        sid = PubSub.subscribe('getContent', (_, { title, content }) => {
             setInfo({
                 title, 
                 content
             })
         })
+        return () => {
+            PubSub.unsubscribe(sid)
+        }
     }, [])
     return (
         <StyleTopMenu className='flex_center'>

@@ -1,10 +1,12 @@
-import React, { useState, useEffect, createRef, useCallback, useRef } from 'react'
+import React, { useState, useEffect, createRef, useCallback } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd'
 import _ from 'lodash'
 import Pubsub from 'pubsub-js'
+
+import CollapseNav from "./CollapseNav"
 
 const StyleTM = styled.div`
     z-index: 2;
@@ -47,6 +49,13 @@ const StyleTM = styled.div`
             justify-content: center;
             align-items: center;
             height: 100%;
+        }
+    }
+    .collapse_nav {
+        cursor: pointer;
+        display: none;
+        i {
+            font-size: 22px;
         }
     }
     .advertise {
@@ -166,6 +175,9 @@ const StyleTM = styled.div`
         .nav {
             display: none;
         }
+        .collapse_nav {
+            display: flex;
+        }
     }
     @media screen and (max-width: 1000px) {
         .advertise {
@@ -207,8 +219,8 @@ export default function TopMenu({ user }) {
         window.onscroll = _.throttle(scrollEvent, 100)
         sidR = Pubsub.subscribe('recover', () => {
             top_menu.current.style.transform = 'translateY(0)'
-            window.onscroll = null
-            window.onscroll = _.throttle(scrollEvent, 100)
+            // window.onscroll = null
+            // window.onscroll = _.throttle(scrollEvent, 100)
         })
         sidS = Pubsub.subscribe('studying', (_, bool) => {
             top_menu.current.style.transform = bool ? 'translateY(-100%)' : 'translateY(0)'
@@ -224,14 +236,19 @@ export default function TopMenu({ user }) {
             <div className="logo" onClick={() => navigateTo('/article')}>
                 <img src="/image/logo.png" alt="Ky" title='Ky客' />
             </div>
-            <div className="nav">
-                <NavLink to='/article' style={({ isActive }) => isActive ? activeStyle : undefined}>首页</NavLink>
-                <NavLink to='/article/studying' style={({ isActive }) => isActive ? activeStyle : undefined}>学习</NavLink>
-                <NavLink to='/article/life' style={({ isActive }) => isActive ? activeStyle : undefined}>生活</NavLink>
-                <NavLink to='/article/coding' style={({ isActive }) => isActive ? activeStyle : undefined}>Coding</NavLink>
-                <NavLink to='/article/clothes' style={({ isActive }) => isActive ? activeStyle : undefined}>服饰</NavLink>
-                <NavLink to='/article/foods' style={({ isActive }) => isActive ? activeStyle : undefined}>美食</NavLink>
-            </div>
+            <>
+                <div className="nav">
+                    <NavLink to='/article' style={({ isActive }) => isActive ? activeStyle : undefined}>首页</NavLink>
+                    <NavLink to='/article/studying' style={({ isActive }) => isActive ? activeStyle : undefined}>学习</NavLink>
+                    <NavLink to='/article/life' style={({ isActive }) => isActive ? activeStyle : undefined}>生活</NavLink>
+                    <NavLink to='/article/coding' style={({ isActive }) => isActive ? activeStyle : undefined}>Coding</NavLink>
+                    <NavLink to='/article/clothes' style={({ isActive }) => isActive ? activeStyle : undefined}>服饰</NavLink>
+                    <NavLink to='/article/foods' style={({ isActive }) => isActive ? activeStyle : undefined}>美食</NavLink>
+                </div>
+                <div className="collapse_nav">
+                    <CollapseNav />
+                </div>
+            </>
             <div className="advertise flex_center">
                 <img src="/image/advertise.png" alt="" title='advertise' />
             </div>
