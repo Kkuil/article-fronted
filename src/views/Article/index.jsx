@@ -18,7 +18,7 @@ function Article({ userInfo, modify }) {
             if (status === 200) {
                 modify(user)
             } else {
-                message.error(msg, 3)
+                message.info(msg, 3)
             }
         }
         Auth()

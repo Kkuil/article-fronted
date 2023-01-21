@@ -2,7 +2,7 @@ import React, { useState, useEffect, createRef, useCallback } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar } from 'antd'
+import { Dropdown, Avatar } from 'antd'
 import _ from 'lodash'
 import Pubsub from 'pubsub-js'
 
@@ -131,6 +131,7 @@ const StyleTM = styled.div`
         }
     }
     .profile {
+        position: relative;
         margin-left: 10px;
         cursor: pointer;
         .username {
@@ -190,6 +191,34 @@ const activeStyle = {
     color: '#0094ff',
     borderBottom: '2px solid #0094ff'
 }
+
+const getDropItems = (navigateTo) => {
+    return [
+        {
+            key: "my",
+            label: (
+                <span>
+                    <i className="iconfont icon-wode"></i>
+                    <span onClick={() => navigateTo("/profile")}>我的</span>
+                </span>
+            )
+        },
+        {
+            key: "logout",
+            label: <span
+                onClick={() => {
+                    const USER_TOKEN = localStorage.getItem("USER_TOKEN")
+                    USER_TOKEN && localStorage.removeItem("USER_TOKEN")
+                    navigateTo("/login")
+                }}
+            >
+                <i className="iconfont icon-dingbudaohang-zhangh"></i>
+                <span>退出登录</span>
+            </span>
+        },
+    ]
+}
+
 var sidR = null
 var sidS = null
 export default function TopMenu({ user }) {
@@ -273,6 +302,27 @@ export default function TopMenu({ user }) {
                         ? <img src={user.avatar} alt="" title={user.username} />
                         : <Avatar size='large' icon={<UserOutlined />} />
                 }
+                <Dropdown
+                    menu={{
+                        items: getDropItems(navigateTo)
+                    }}
+                    style={{
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%"
+                    }}
+                >
+                    <i
+                        className="iconfont icon-arrow-down-filling"
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
+                            fontSize: 70,
+                            color: "transparent"
+                        }}
+                    ></i>
+                </Dropdown>
             </div>
         </StyleTM>
     )

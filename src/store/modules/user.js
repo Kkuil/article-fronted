@@ -5,15 +5,14 @@ const user = createSlice({
     initialState: {
         user: {
             id: 'xxx',
-            username: 'Kkuil'
+            username: '未登录',
+            phone_number: "123456789",
+            avatar: ""
         }
     },
     reducers: {
         modify(state, actions) {
-            state.user = {
-                id: actions.payload.id,
-                username: actions.payload.username
-            }
+            state.user = actions.payload
         }
     }
 })

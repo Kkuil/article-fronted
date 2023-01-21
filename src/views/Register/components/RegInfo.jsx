@@ -86,7 +86,7 @@ export default function RegInfo({ setCurrent }) {
             }
         })
         if (!timer) {
-            const uReg = /\w/g
+            const uReg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
             const isPass = uReg.test(e.target.value)
             setStatus({
                 ...status,
