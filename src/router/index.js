@@ -13,7 +13,7 @@ export default function Router() {
                 <Route path="/article" element={<CompLazy path="/Article/views/Main" />}>
                     <Route path=":type" element={<ArticleType />}></Route>
                 </Route>
-                <Route path="article_details" element={<CompLazy path="/Article/views/ArticleDetails" />}></Route>
+                <Route path="details" element={<CompLazy path="/Article/views/ArticleDetails" />}></Route>
                 <Route path="studying" element={<CompLazy path="/Article/views/Studying" />}></Route>
                 <Route path="life" element={<CompLazy path="/Article/views/Life" />}></Route>
                 <Route path="coding" element={<CompLazy path="/Article/views/Coding" />}></Route>
@@ -30,6 +30,7 @@ export default function Router() {
             <Route path="/find_pw" element={<CompLazy path="/FindPw" />}></Route>
             <Route path="/register" element={<CompLazy path="/Register" />}></Route>
             <Route path="/publish" element={<CompLazy path="/Publish"/>}></Route>
+            <Route path="/404NF" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     )

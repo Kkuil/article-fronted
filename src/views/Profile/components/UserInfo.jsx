@@ -1,9 +1,10 @@
-import React from 'react'
-import { Outlet, NavLink } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Outlet, NavLink, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { Avatar, Tabs } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
+import { useMemo } from 'react'
 
 const StyleUser = styled.div`
     height: calc(100vh - 70px);
@@ -14,11 +15,10 @@ const StyleUser = styled.div`
     animation: downGradient 0.5s linear forwards;
     .user_info {
         width: 900px;
-        height: 600px;
+        min-height: 600px;
         background-color: #fff;
         margin: 0 auto;
         border-radius: 10px;
-        overflow: hidden;
         box-shadow: 0 0 2px 1px #ccc;
         .top {
             position: relative;
@@ -63,7 +63,7 @@ const StyleUser = styled.div`
                 bottom: 15px;
             }
         }
-        .content {
+        > .content {
             .tab_bar {
                 height: 46px;
                 padding: 0 10px;
@@ -114,6 +114,12 @@ const items = [
 ]
 
 function UserInfo({ user }) {
+    const location = useLocation()
+    const [curPath, setCurPath] = useState(location.pathname)
+    useMemo(() => {
+        console.log(location.pathname)
+        setCurPath(location.pathname)
+    }, [location])
     return (
         <StyleUser>
             <div className="user_info">
@@ -132,7 +138,7 @@ function UserInfo({ user }) {
                 <div className="content">
                     <div className="tab_bar">
                         <Tabs
-                            defaultActiveKey="2"
+                            activeKey={curPath}
                             items={items}
                         />
                     </div>

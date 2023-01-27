@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
+import React, { useState, useEffect, useMemo } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
 import style from './article.module.scss'
 import { message } from 'antd'
 import PubSub from 'pubsub-js'
@@ -10,8 +10,10 @@ import TopMenu from './components/TopMenu'
 import ToolKits from './components/ToolKits'
 import { connect } from 'react-redux'
 
+var sId = null
 function Article({ userInfo, modify }) {
     const [isStudying, setIsStudying] = useState(false)
+    const location = useLocation()
     useEffect(() => {
         async function Auth() {
             const { status, msg, user } = await auth()
@@ -24,10 +26,16 @@ function Article({ userInfo, modify }) {
         Auth()
     }, [modify])
     useEffect(() => {
-        PubSub.subscribe('studying', (_, bool) => {
+        sId = PubSub.subscribe('studying', (_, bool) => {
             setIsStudying(bool)
         })
+        return () => {
+            sId && PubSub.unsubscribe(sId)
+        }
     }, [])
+    useMemo(() => {
+        PubSub.publish('recover')
+    }, [location])
     return (
         <div
             className={style.article}

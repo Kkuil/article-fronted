@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Empty, Skeleton, message } from 'antd'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { findArticle } from '@/api/article'
 import styled from 'styled-components'
 
@@ -74,6 +74,7 @@ const StyleArticleType = styled.div`
 
 export default function ArticleType() {
     const navigateTo = useNavigate()
+    const location = useLocation()
     const { type } = useParams()
     let [articles, setArticles] = useState([])
     let [isLoading, setIsLoading] = useState(true)
@@ -82,8 +83,9 @@ export default function ArticleType() {
             return (
                 <div
                     className="item" key={item.article_id}
-                    onClick={() => navigateTo(`/article/article_details`, {
+                    onClick={() => navigateTo(`/article/details`, {
                         state: {
+                            type: location.pathname.split('/')[2],
                             article_id: item.article_id
                         }
                     })}
@@ -111,7 +113,6 @@ export default function ArticleType() {
                             </span>
                         </div>
                     </main>
-                    <img src="" alt="" className="cover" />
                 </div>
             )
         })

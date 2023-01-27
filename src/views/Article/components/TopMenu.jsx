@@ -255,8 +255,8 @@ export default function TopMenu({ user }) {
             top_menu.current.style.transform = bool ? 'translateY(-100%)' : 'translateY(0)'
         })
         return () => {
-            Pubsub.unsubscribe(sidR)
-            Pubsub.unsubscribe(sidS)
+            sidR && Pubsub.unsubscribe(sidR)
+            sidS && Pubsub.unsubscribe(sidS)
             window.onscroll = null
         }
     }, [scrollEvent, top_menu])
