@@ -4,7 +4,7 @@ const user = createSlice({
     name: 'user',
     initialState: {
         user: {
-            id: 'xxx',
+            id: '',
             username: '未登录',
             phone_number: "123456789",
             avatar: ""

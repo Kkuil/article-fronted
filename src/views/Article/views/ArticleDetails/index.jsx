@@ -7,7 +7,11 @@ import { UserOutlined } from '@ant-design/icons'
 import { modify } from "@/store/modules/article"
 import { connect } from 'react-redux'
 import moment from 'moment'
+
 import { updateArticle } from "@/api/article"
+import { findIsLike, likeArticle } from "@/api/user_article"
+import { useState } from 'react'
+import _ from 'lodash'
 
 const Details = styled.div`
     width: 650px;
@@ -39,6 +43,7 @@ const Details = styled.div`
     }
     .comments {
         .writeSomething {
+            position: relative;
             height: 50px;
             border-bottom: 1px solid #ccc;
             input {
@@ -53,6 +58,26 @@ const Details = styled.div`
                 &:focus {
                     width: 370px;
                     border-color: #0094f;
+                }
+            }
+            i {
+                cursor: pointer;
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                width: 30px;
+                height: 30px;
+                border-radius: 15px;
+                box-shadow: 0 0 1px 1px #ccc;
+                transform: translateY(-50%);
+                font-size: 18px;
+                transition: all .3s;
+                &:hover {
+                    color: #fff;
+                    background-color: #0094ff;
+                }
+                &:active {
+                    transform: translateY(-50%) scale(0.9);
                 }
             }
         }
@@ -93,6 +118,8 @@ function ArticleDetail({ article, modify, user }) {
     const comment = createRef()
     const navigateTo = useNavigate()
     const location = useLocation()
+    const [isLike, setIsLike] = useState(false)
+    // 初始化展示
     useEffect(() => {
         if (!location.state?.article_id || !location.state?.type) {
             navigateTo("/404NF")
@@ -107,6 +134,19 @@ function ArticleDetail({ article, modify, user }) {
         }
         fetchData()
     }, [location])
+    // 用户是否点赞
+    useEffect(() => {
+        async function fetchData() {
+            const { status, like } = await findIsLike({
+                id: user.id,
+                article_id: article.article_id
+            })
+            if (status === 200) {
+                setIsLike(like)
+            }
+        }
+        user.id && article.article_id && fetchData()
+    }, [user, article])
     const issue = async e => {
         if ((e.type === "keyup" && e.keyCode === 13) || e.type === "click") {
             const value = comment.current.value
@@ -127,19 +167,33 @@ function ArticleDetail({ article, modify, user }) {
             })
             comment.current.value = ""
             // 更新数据库
-            const { status, msg } = await updateArticle({
+            const { status } = await updateArticle({
                 article_type: location.state.type,
                 article_id: location.state.article_id,
                 prop: "comments",
                 value: newValue
             })
-            if(status === 200) {
-                message.success(msg, 3)
+            if (status === 200) {
+                message.success("发表成功", 3)
             } else {
-                message.error(msg, 3)
+                message.error("发表失败", 3)
             }
         }
     }
+    const like = _.throttle(async () => {
+        const { status } = await likeArticle({
+            id: user.id,
+            article_id: article.article_id,
+            article_type: location.state?.type,
+            isLike: !isLike
+        })
+        if(status === 200) {
+            message.success(isLike ? "取消点赞成功" : "点赞成功", 2)
+            setIsLike(!isLike)
+        } else {
+            message.error(isLike ? "取消点赞失败" : "点赞失败", 2)
+        }
+    }, 1000)
     return (
         <div
             className='flex_center'
@@ -163,6 +217,14 @@ function ArticleDetail({ article, modify, user }) {
                             type="primary"
                             onClick={issue}
                         >发表</Button>
+                        <i
+                            className="iconfont icon-dianzan flex_center"
+                            style={{
+                                backgroundColor: !isLike || "#0094ff",
+                                color: !isLike || "#fff"
+                            }}
+                            onClick={like}
+                        ></i>
                     </div>
                     <div className="commentsContent">
                         {

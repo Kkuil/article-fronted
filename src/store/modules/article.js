@@ -4,6 +4,7 @@ const Article = createSlice({
     name: "Article",
     initialState: {
         article: {
+            article_id: "",
             comments: "[]",
             content: "",
             publish_time: "",
