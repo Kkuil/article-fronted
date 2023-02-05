@@ -31,7 +31,7 @@ const steps = [
 
 var sid = null
 export default function FindPw() {
-    const [current, setCurrent] = useState(2)
+    const [current, setCurrent] = useState(0)
     let [phoneNumber, setPhoneNumber] = useState('')
     const items = steps.map((item) => ({
         key: item.title,

@@ -1,6 +1,5 @@
 import React, { useEffect, createRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { findArticle } from "@/api/article"
 import styled from 'styled-components'
 import { Avatar, Button, Empty, message } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
@@ -8,7 +7,7 @@ import { modify } from "@/store/modules/article"
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-import { updateArticle } from "@/api/article"
+import { findArticle, updateArticle } from "@/api/article"
 import { findIsLike, likeArticle } from "@/api/user_article"
 import { useState } from 'react'
 import _ from 'lodash'
@@ -147,6 +146,25 @@ function ArticleDetail({ article, modify, user }) {
         }
         user.id && article.article_id && fetchData()
     }, [user, article])
+    // 增加浏览量
+    useEffect(() => {
+        async function fetchData() {
+            const data = await findArticle({
+                article_id: article.article_id,
+                article_type: location.state.type
+            })
+            if (data.status === 200) {
+                await updateArticle({
+                    article_id: article.article_id,
+                    article_type: location.state.type,
+                    prop: "views",
+                    value: +data.article.views+1
+                })
+            }
+        }
+        fetchData()
+    }, [article])
+    // 发布评论
     const issue = async e => {
         if ((e.type === "keyup" && e.keyCode === 13) || e.type === "click") {
             const value = comment.current.value
@@ -180,6 +198,7 @@ function ArticleDetail({ article, modify, user }) {
             }
         }
     }
+    // 点赞或取消点赞
     const like = _.throttle(async () => {
         const { status } = await likeArticle({
             id: user.id,
@@ -187,13 +206,14 @@ function ArticleDetail({ article, modify, user }) {
             article_type: location.state?.type,
             isLike: !isLike
         })
-        if(status === 200) {
+        if (status === 200) {
             message.success(isLike ? "取消点赞成功" : "点赞成功", 2)
             setIsLike(!isLike)
         } else {
             message.error(isLike ? "取消点赞失败" : "点赞失败", 2)
         }
     }, 1000)
+
     return (
         <div
             className='flex_center'

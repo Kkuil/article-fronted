@@ -15,7 +15,7 @@ export const findArticle = async ({ limit, article_type, article_id }) => {
 }
 
 // 更新文章
-export const updateArticle = async ({ article_type, article_id, prop, value }) => {
+export const updateArticle = async ({ article_type="recommend", article_id, prop, value }) => {
     const { data } = await request({
         url: "/article/update",
         method: "PUT",
