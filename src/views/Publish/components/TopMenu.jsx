@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
 import { message } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import { useCallback } from 'react'
 
 const StyleTopMenu = styled.div`
     height: 50px;
@@ -34,17 +35,16 @@ function TopMenu({ username }) {
         title: '',
         content: ''
     })
-    async function upload_article() {
+    const upload_article = useCallback(async function () {
         PubSub.publish('tmpBridge')
-        console.log(info)
-        if(!username) {
+        if (!username) {
             message.error("您还未登录，请先登录吧", 3)
             navigateTo("/login")
             return
-        } else if(!info.title) {
+        } else if (!info.title) {
             message.error("标题不能为空", 3)
             return
-        } else if(!info.content) {
+        } else if (!info.content) {
             message.error("内容不能为空", 3)
             return
         }
@@ -55,18 +55,18 @@ function TopMenu({ username }) {
         })
         message[status === 200 ? "success" : "error"](msg, 3)
         navigateTo("/article")
-    }
+    }, [sid])
     useEffect(() => {
         sid = PubSub.subscribe('getContent', (_, { title, content }) => {
             setInfo({
-                title, 
+                title,
                 content
             })
         })
         return () => {
-            PubSub.unsubscribe(sid)
+            sid && PubSub.unsubscribe(sid)
         }
-    }, [])
+    }, [sid])
     return (
         <StyleTopMenu className='flex_center'>
             <button className="publish" onClick={upload_article}>发布</button>

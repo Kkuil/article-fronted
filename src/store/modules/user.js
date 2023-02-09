@@ -7,7 +7,8 @@ const user = createSlice({
             id: '',
             username: '未登录',
             phone_number: "123456789",
-            avatar: ""
+            avatar: "",
+            isLogin: false
         }
     },
     reducers: {

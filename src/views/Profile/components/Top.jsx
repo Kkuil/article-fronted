@@ -1,8 +1,11 @@
+import { Button } from 'antd'
 import React from 'react'
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const StyleTop = styled.div`
+    position: relative;
     height: 70px;
     background-color: #0094ff;
     font-size: 30px;
@@ -15,12 +18,22 @@ const StyleTop = styled.div`
             transform: translateY(0);
         }
     }
+    button {
+        position: absolute;
+        top: 50%;
+        left: 30px;
+        transform: translateY(-50%);
+    }
 `
 
 function Top({ user }) {
+    const navigateTo = useNavigate()
     return (
         <StyleTop className='flex_center'>
-            <span className='title'>{ user.username }的个人中心</span>
+            <Button
+                onClick={() => navigateTo("/")}
+            >回到主页</Button>
+            <span className='title'>{user.username}的个人中心</span>
         </StyleTop>
     )
 }

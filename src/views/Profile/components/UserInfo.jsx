@@ -117,7 +117,6 @@ function UserInfo({ user }) {
     const location = useLocation()
     const [curPath, setCurPath] = useState(location.pathname)
     useMemo(() => {
-        console.log(location.pathname)
         setCurPath(location.pathname)
     }, [location])
     return (

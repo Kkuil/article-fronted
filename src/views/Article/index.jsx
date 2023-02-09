@@ -18,7 +18,10 @@ function Article({ userInfo, modify }) {
         async function Auth() {
             const { status, msg, user } = await auth()
             if (status === 200) {
-                modify(user)
+                modify({
+                    ...user,
+                    isLogin: true
+                })
             } else {
                 message.info(msg, 3)
             }

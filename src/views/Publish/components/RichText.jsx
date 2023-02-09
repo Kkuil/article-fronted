@@ -1,7 +1,7 @@
 import React, { useEffect, createRef } from 'react'
 import { Editor } from '@tinymce/tinymce-react';
 import styled from 'styled-components';
-import PubSub from 'pubsub-js'
+import Pubsub from 'pubsub-js'
 
 const Input = styled.input`
     border: 0;
@@ -16,18 +16,21 @@ const Input = styled.input`
         border-color: #0094ff;
     }
 `
-
+var sid = null
 export default function RichText() {
     const editorRef = createRef(null);
     const title = createRef(null)
     useEffect(() => {
-        PubSub.subscribe("tmpBridge", () => {
-            PubSub.publish("getContent", {
+        sid = Pubsub.subscribe("tmpBridge", () => {
+            Pubsub.publish("getContent", {
                 title: title.current.value, 
                 content: editorRef.current.getContent()
             })
         })
-    }, [])
+        return () => {
+            sid && Pubsub.unsubscribe(sid)
+        }
+    }, [sid])
     return (
         <>
             <Input type="text" ref={title} placeholder='为你的文章起个标题吧'/>

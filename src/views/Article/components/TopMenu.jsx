@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createRef, useCallback } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { UserOutlined } from '@ant-design/icons';
 import { Dropdown, Avatar } from 'antd'
@@ -192,8 +192,8 @@ const activeStyle = {
     borderBottom: '2px solid #0094ff'
 }
 
-const getDropItems = (navigateTo) => {
-    return [
+const getDropItems = (navigateTo, isLogin) => {
+    const menu = [
         {
             key: "my",
             label: (
@@ -213,17 +213,22 @@ const getDropItems = (navigateTo) => {
                 }}
             >
                 <i className="iconfont icon-dingbudaohang-zhangh"></i>
-                <span>退出登录</span>
+                <span>{isLogin ? "退出登录" : "去登录"}</span>
             </span>
         },
     ]
+    return isLogin ? menu : menu.slice(1)
 }
+
+const activeFunc = ({ isActive }) => isActive ? activeStyle : undefined
+const indexMap = ["/article/recommend", "/article/newest", "/article/hottest"]
 
 var sidR = null
 var sidS = null
 export default function TopMenu({ user }) {
     const navigateTo = useNavigate()
     let [isFocus, setIsFocus] = useState(false)
+    const location = useLocation()
     const top_menu = createRef()
     // 上一次滚动位置
     let [preScrollY, setPreScrollY] = useState(0)
@@ -267,12 +272,12 @@ export default function TopMenu({ user }) {
             </div>
             <>
                 <div className="nav">
-                    <NavLink to='/article' style={({ isActive }) => isActive ? activeStyle : undefined}>首页</NavLink>
-                    <NavLink to='/article/studying' style={({ isActive }) => isActive ? activeStyle : undefined}>学习</NavLink>
-                    <NavLink to='/article/life' style={({ isActive }) => isActive ? activeStyle : undefined}>生活</NavLink>
-                    <NavLink to='/article/coding' style={({ isActive }) => isActive ? activeStyle : undefined}>Coding</NavLink>
-                    <NavLink to='/article/clothes' style={({ isActive }) => isActive ? activeStyle : undefined}>服饰</NavLink>
-                    <NavLink to='/article/foods' style={({ isActive }) => isActive ? activeStyle : undefined}>美食</NavLink>
+                    <NavLink to={indexMap.includes(location.pathname) ? location.pathname : "/article/recommend"} style={activeFunc}>首页</NavLink>
+                    <NavLink to='/article/studying' style={activeFunc}>学习</NavLink>
+                    <NavLink to='/article/life' style={activeFunc}>生活</NavLink>
+                    <NavLink to='/article/coding' style={activeFunc}>Coding</NavLink>
+                    <NavLink to='/article/clothes' style={activeFunc}>服饰</NavLink>
+                    <NavLink to='/article/foods' style={activeFunc}>美食</NavLink>
                 </div>
                 <div className="collapse_nav">
                     <CollapseNav />
@@ -304,7 +309,7 @@ export default function TopMenu({ user }) {
                 }
                 <Dropdown
                     menu={{
-                        items: getDropItems(navigateTo)
+                        items: getDropItems(navigateTo, user.isLogin)
                     }}
                     style={{
                         position: "absolute",
